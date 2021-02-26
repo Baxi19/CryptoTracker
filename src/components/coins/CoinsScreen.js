@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, FlatList, Text, ActivityIndicator, StyleSheet }from 'react-native';
 import Http from 'CryptoTracker/src/libs/http';
 import CoinsItem from 'CryptoTracker/src/components/coins/CoinsItem';
+import Colors from 'CryptoTracker/src/res/colors';
 
 class CoinsScreen extends Component {
     
@@ -51,7 +52,7 @@ class CoinsScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff"
+        backgroundColor: Colors.charade
     },
 
     title: {
