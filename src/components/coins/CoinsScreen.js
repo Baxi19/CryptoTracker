@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, StyleSheet }from 'react-native';
+import { View, FlatList, Text, ActivityIndicator, StyleSheet }from 'react-native';
 import Http from 'CryptoTracker/src/libs/http';
-
+import CoinsItem from 'CryptoTracker/src/components/coins/CoinsItem';
 
 class CoinsScreen extends Component {
     
     state = {
-        coins: []
+        coins: [],
+        loading: false
     }
 
     componentDidMount = async () => {
+        this.setState({ loading: true });
         const res = await Http.instance.get("https://api.coinlore.net/api/tickers/");
-        this.setState({ coins: res.data });
+        this.setState({ coins: res.data, loading: false });
     }
     
     handlePress = () => {
@@ -20,21 +22,25 @@ class CoinsScreen extends Component {
     }
     
     render() {
-        const { coins } = this.state;
+        const { coins, loading } = this.state;
 
         return (
             <View style={styles.container}>
-              <FlatList 
-                data= { coins }
-                renderItem={({ item }) => 
                 
-                <View>
-                    <Text style={styles.title} >{ item.name }</Text>
-                    <Text style={styles.description}>{ item.symbol }</Text>
-                </View>
-                   
+                { loading ? 
+                    <ActivityIndicator 
+                        style={styles.loader}
+                        color="#fff" 
+                        size="large"/> 
+                    : null 
                 }
-              />  
+                
+                <FlatList 
+                    data= { coins }
+                    renderItem={ ({item}) => 
+                        <CoinsItem item={item}/>
+                    }
+                />  
 
             </View>
         );
@@ -45,7 +51,7 @@ class CoinsScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "blue"
+        backgroundColor: "#fff"
     },
 
     title: {
@@ -70,6 +76,10 @@ const styles = StyleSheet.create({
     btnText: {
        color: "#fff",
        textAlign: "center" 
+    },
+
+    loader: {
+        marginTop: 60
     }
 });
 
