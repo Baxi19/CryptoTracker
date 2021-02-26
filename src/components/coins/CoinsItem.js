@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
        padding: 16,
        borderBottomColor: Colors.zircon,
        borderBottomWidth: 1,
-       marginLeft: Platform.OS == "ios" ? 16: 0
+       paddingLeft: Platform.OS == "ios" ? 0 : 16,
+       marginLeft: Platform.OS == "ios" ? 16 : 0
     },
    
     row: {
