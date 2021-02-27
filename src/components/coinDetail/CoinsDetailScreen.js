@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { View, Image, Text, StyleSheet, SectionList, FlatList }from 'react-native';
 import Colors from 'CryptoTracker/src/res/colors';
 import Http from 'CryptoTracker/src/libs/http';
+import CoinMarketItem from './CoinMarketItem';
 
-class CoinDetailScreen extends Component{
+class CoinDetailScreen extends Component {
     
     state = {
         coin: {},
@@ -78,12 +79,18 @@ class CoinDetailScreen extends Component{
                         </View>
                     }
                /> 
-                <Text>Markets</Text>
+               
+                <Text style={styles.marketsTitle}>Markets</Text>
                 <FlatList
+                    style={styles.list}
+                    keyExtractor={(item, index) => index.toString()}
                     data={markets}
-                    renderItem={({ item }) => <Text>{item.name}</Text>}
+                    renderItem={({ item }) => 
+                        <CoinMarketItem item={item}/> 
+                    }
                     horizontal={true}
                 />
+
             </View>
         )
     }
@@ -136,6 +143,19 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: Colors.white
     },
+
+    list: {
+        maxHeight: 100,
+        paddingLeft: 16
+    },
+
+    marketsTitle: {
+        color: Colors.white,
+        fontSize: 16,
+        marginBottom: 16,
+        marginLeft: 16,
+        fontWeight: "bold"  
+    }
 });
 
 export default CoinDetailScreen;

@@ -11,13 +11,13 @@ const CoinMarketItem = ({ item }) => {
     );
 }
 
-const styles = StyleSheet({
+const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'rgba(0,0,0, 0.2)',
+        backgroundColor: 'rgba(0,0,0, 0.1)',
         borderColor: Colors.zircon,
         borderWidth: 1,
         padding: 16,
-        marginR: 8,
+        marginRight: 8,
         alignItems: "center"
     },
 
@@ -27,8 +27,8 @@ const styles = StyleSheet({
     },
     
     priceText: {
-        color: Colors.white,
-    },
+        color: Colors.white
+    }
 });
 
 export default CoinMarketItem;
