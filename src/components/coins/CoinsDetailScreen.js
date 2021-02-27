@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, Image, Text, StyleSheet, SectionList }from 'react-native';
+import { View, Image, Text, StyleSheet, SectionList, FlatList }from 'react-native';
 import Colors from 'CryptoTracker/src/res/colors';
+import Http from 'CryptoTracker/src/libs/http';
 
 class CoinDetailScreen extends Component{
     
     state = {
-        coin: {}
+        coin: {},
+        markets: []
     }
 
     getSymbolIcon = (name) => {
@@ -33,14 +35,21 @@ class CoinDetailScreen extends Component{
         return sections;
     }
 
+    getMarkets = async (coinId) => {
+        const url = `https://api.coinlore.net/api/coin/markets/?id=${coinId}`;
+        const markets = await Http.instance.get(url);
+        this.setState({ markets });
+    }
+
     componentDidMount() {
         const { coin } = this.props.route.params;
         this.props.navigation.setOptions({ title: coin.symbol });
+        this.getMarkets(coin.id);
         this.setState({ coin });
     }
 
     render(){
-        const { coin } = this.state;
+        const { coin, markets } = this.state;
 
         return (
             <View style={ styles.container }>
@@ -53,8 +62,8 @@ class CoinDetailScreen extends Component{
                </View>
                
                <SectionList
+                    style={ styles.section }
                     sections={this.getSections(coin)}
-                    
                     keyExtractor={(item) => item }
                     
                     renderItem={({item}) => 
@@ -69,6 +78,12 @@ class CoinDetailScreen extends Component{
                         </View>
                     }
                /> 
+                <Text>Markets</Text>
+                <FlatList
+                    data={markets}
+                    renderItem={({ item }) => <Text>{item.name}</Text>}
+                    horizontal={true}
+                />
             </View>
         )
     }
@@ -96,6 +111,10 @@ const styles = StyleSheet.create({
         color: Colors.white,
         fontWeight: "bold",
         marginLeft: 8
+    },
+
+    section: {
+        maxHeight: 220
     },
 
     sectionHeader: {
