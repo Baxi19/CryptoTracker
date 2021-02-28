@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Pressable, Text, StyleSheet, SectionList, FlatList }from 'react-native';
+import { View, Image, Pressable, Text, StyleSheet, SectionList, FlatList, Alert }from 'react-native';
 import Colors from 'CryptoTracker/src/res/colors';
 import Http from 'CryptoTracker/src/libs/http';
 import Storage from 'CryptoTracker/src/libs/storage';
@@ -21,18 +21,48 @@ class CoinDetailScreen extends Component {
         }
     }
 
-    addFavorite = () => {
+    addFavorite = async () => {
         const coin = JSON.stringify(this.state.coin);
-        const key = `favorite=${this.state.coin.id}`;
-
-        const stored = Storage.instance.store(key, coin);
+        const key = `favorite-${this.state.coin.id}`;
+        const stored = await  Storage.instance.store(key, coin);
+        
+        console.log(`==>Stored: ${stored}`);
+        
         if(stored){
             this.setState({ isFavorite:true });
         }
     }
     
-    removeFavorite = () => {
+    removeFavorite = async () => {
+        Alert.alert("Remove Favorite", "Are you sure?", [
+            {
+                text: "Cancel",
+                onPress: () => {},
+                style: "cancel"
+            },
+            {
+                text: "Remove",
+                onPress: async () => {
+                    const key = `favorite-${this.state.coin.id}`;
+                    await Storage.instance.remove(key);
+                    this.setState({ isFavorite: false });
+                },
+                style: "destructive"
+            },
+        ]);
+    }
 
+    getFavorite = async () => {
+        try {
+            const key = `favorite-${this.state.coin.id}`;
+            const favStr = await Storage.instance.get(key);    
+            if(favStr != null){
+                this.setState({ isFavorite: true });
+            }
+        } catch (error) {
+            console.log(`===>Error in CoinsDetailScreen getFavorite(): ${error}`);
+        }
+        
     }
 
     getSymbolIcon = (name) => {
@@ -70,7 +100,9 @@ class CoinDetailScreen extends Component {
         const { coin } = this.props.route.params;
         this.props.navigation.setOptions({ title: coin.symbol });
         this.getMarkets(coin.id);
-        this.setState({ coin });
+        this.setState({ coin }, () => {
+            this.getFavorite();
+        });
     }
 
     render(){
