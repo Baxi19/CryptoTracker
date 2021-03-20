@@ -1,5 +1,5 @@
-# <div align="center">Crypto Tracker :octocat:</div>
-### <div align="center">:+1: :octocat: React Native App :fire:</div>
+# <div align="center">Crypto Tracker :moneybag:</div>
+### <div align="center">:octocat: React Native App :money_with_wings:</div>
 
 <div class="row" align="center">
   <img src="./documentation/video1.gif" width="200" height="400" />
