@@ -1,6 +1,12 @@
-# <div align="center">CryptoTracker</div>
+# <div align="center">Crypto Tracker :octocat:</div>
+### <div align="center">:+1: :octocat: React Native App :fire:</div>
+### <div align="center">Example of app :fire: !!</div>
 
-:+1: :octocat: React Native App :fire:
+<div class="row" align="center">
+  <img src="./documentation/video1.gif" width="200" height="400" />
+</div>
+
+
 
 #### Dependicies to Install:
 
